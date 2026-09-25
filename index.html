@@ -113,6 +113,28 @@
   .doc-card .btn-order{display:inline-block;margin-top:14px;border:1px solid var(--line);color:var(--text);padding:9px 16px;border-radius:3px;text-decoration:none;font-size:0.88rem;font-weight:500;}
   .boutique-note{margin-top:24px;font-size:0.85rem;color:var(--dim);border-left:2px solid var(--ember);padding-left:14px;}
 
+  section.numero{padding:56px 0;border-bottom:1px solid var(--line);background:var(--card);}
+  section.numero h2{font-size:clamp(1.5rem,3vw,2rem);max-width:22ch;}
+  section.numero p.intro{color:var(--dim);margin-top:12px;max-width:60ch;line-height:1.6;}
+  .numero-box{margin-top:30px;display:grid;grid-template-columns:1fr 1.3fr;gap:32px;align-items:start;}
+  .numero-form{background:var(--void);border:1px solid var(--line);border-radius:6px;padding:26px;}
+  .numero-form label{display:block;font-size:0.85rem;color:var(--jade);font-weight:600;margin-bottom:8px;}
+  .numero-form input[type="date"]{
+    width:100%;background:var(--card);border:1px solid var(--line);color:var(--text);
+    padding:10px 12px;border-radius:4px;font-size:0.95rem;font-family:'Work Sans',sans-serif;
+  }
+  .numero-form button{
+    margin-top:16px;width:100%;background:var(--ember);color:var(--void);border:none;
+    padding:12px;border-radius:4px;font-weight:700;font-size:0.95rem;cursor:pointer;
+  }
+  .numero-result{min-height:180px;display:flex;flex-direction:column;justify-content:center;}
+  .numero-result .placeholder-txt{color:var(--dim);font-size:0.92rem;line-height:1.6;}
+  .numero-result .num-big{font-family:'Spectral',serif;font-size:3.4rem;color:var(--ember);line-height:1;margin-bottom:6px;}
+  .numero-result .num-label{font-family:'Spectral',serif;font-size:1.15rem;color:var(--text);margin-bottom:12px;}
+  .numero-result .num-desc{color:var(--dim);font-size:0.92rem;line-height:1.65;}
+
+  .boutique-note{margin-top:24px;font-size:0.85rem;color:var(--dim);border-left:2px solid var(--ember);padding-left:14px;}
+
   .doc-cover{
     width:100%;aspect-ratio:3/4;border-radius:4px;margin-bottom:18px;
     background:linear-gradient(160deg,var(--void),var(--jade) 140%);
@@ -166,6 +188,7 @@
     .practice{grid-template-columns:1fr;gap:16px;}
     .deepen-grid{grid-template-columns:1fr 1fr;}
     .doc-grid{grid-template-columns:1fr;}
+    .numero-box{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -191,6 +214,7 @@
     <div class="brand"><b>Mpanoro</b> — Guides Spirituels</div>
     <div class="nav-links">
       <a href="#pratiques">Pratiques spirituelles</a>
+      <a href="#numerologie">Numérologie</a>
       <a href="#boutique">Documents PDF</a>
       <a class="nav-cta" href="#contact">Prendre rendez-vous</a>
     </div>
@@ -441,6 +465,23 @@
   </div>
 </section>
 
+<section class="numero" id="numerologie">
+  <div class="wrap">
+    <h2>Numérologie — votre chemin de vie</h2>
+    <p class="intro">Le chemin de vie est le nombre central de la numérologie : calculé à partir de votre date de naissance, il éclaire les grandes tendances de votre parcours. Entrez votre date pour découvrir le vôtre.</p>
+    <div class="numero-box">
+      <div class="numero-form">
+        <label for="numero-date">Votre date de naissance</label>
+        <input type="date" id="numero-date">
+        <button type="button" id="numero-btn">Calculer mon chemin de vie</button>
+      </div>
+      <div class="numero-result" id="numero-result">
+        <p class="placeholder-txt">Entrez votre date de naissance et cliquez sur « Calculer » pour découvrir votre nombre de chemin de vie et sa signification.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="boutique" id="boutique">
   <div class="wrap">
     <h2>Documents à télécharger</h2>
@@ -631,6 +672,46 @@
   </div>
 </footer>
 </div>
+
+<script>
+var VIE_DESC = {
+  1: ["Le meneur", "Indépendance, initiative et volonté d'ouvrir sa propre voie. Ce chemin pousse à prendre les devants, à oser commencer, et à développer une confiance en ses propres décisions."],
+  2: ["Le médiateur", "Sensibilité, diplomatie et goût pour l'harmonie. Ce chemin favorise l'écoute, la coopération et les relations profondes, parfois au prix d'une difficulté à s'affirmer seul."],
+  3: ["Le créatif", "Expression, joie de vivre et communication. Ce chemin porte vers l'art, la parole et le partage, avec un besoin réel de s'exprimer pour se sentir pleinement soi-même."],
+  4: ["Le bâtisseur", "Rigueur, sens du travail et besoin de structure. Ce chemin construit patiemment, étape par étape, et trouve sa force dans la constance plus que dans la précipitation."],
+  5: ["Le libre", "Changement, curiosité et goût de la liberté. Ce chemin a besoin de mouvement et de nouveauté ; la routine y est souvent vécue comme un frein plus qu'un repère."],
+  6: ["Le protecteur", "Responsabilité, famille et sens du devoir envers les autres. Ce chemin porte naturellement vers le soin et le soutien de son entourage, parfois jusqu'à s'oublier soi-même."],
+  7: ["Le chercheur", "Introspection, spiritualité et soif de compréhension. Ce chemin a besoin de temps seul pour réfléchir, observer et donner du sens à ce qu'il vit."],
+  8: ["Le bâtisseur d'abondance", "Ambition, sens pratique et rapport à la réussite matérielle. Ce chemin cherche l'équilibre entre pouvoir et intégrité, entre réussite et générosité."],
+  9: ["L'humaniste", "Générosité, idéalisme et vision large. Ce chemin porte vers les autres et vers des causes qui dépassent l'intérêt personnel, avec un vrai sens du don."],
+  11: ["Le maître intuitif", "Nombre maître : grande sensibilité et intuition affûtée. Ce chemin exige d'apprendre à canaliser une forte énergie intérieure, entre inspiration et instabilité émotionnelle."],
+  22: ["Le maître bâtisseur", "Nombre maître : vision large associée à un grand sens pratique. Ce chemin porte le potentiel de réaliser des projets d'envergure, à condition de rester ancré."],
+  33: ["Le maître guide", "Nombre maître : dévouement et compassion à grande échelle. Ce chemin porte vers l'accompagnement désintéressé des autres, avec une exigence intérieure élevée."]
+};
+
+function reduireChemin(n){
+  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+    n = String(n).split('').reduce(function(a,b){ return a + parseInt(b,10); }, 0);
+  }
+  return n;
+}
+
+document.getElementById('numero-btn').addEventListener('click', function(){
+  var val = document.getElementById('numero-date').value;
+  var resultBox = document.getElementById('numero-result');
+  if (!val) {
+    resultBox.innerHTML = '<p class="placeholder-txt">Merci de choisir une date de naissance.</p>';
+    return;
+  }
+  var digits = val.replace(/-/g, '').split('').reduce(function(a,b){ return a + parseInt(b,10); }, 0);
+  var chemin = reduireChemin(digits);
+  var info = VIE_DESC[chemin];
+  resultBox.innerHTML =
+    '<div class="num-big">' + chemin + '</div>' +
+    '<div class="num-label">' + info[0] + '</div>' +
+    '<p class="num-desc">' + info[1] + '</p>';
+});
+</script>
 
 <script>
 document.querySelectorAll('.unlock').forEach(function(box){
