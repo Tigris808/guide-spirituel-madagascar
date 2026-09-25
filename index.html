@@ -133,6 +133,26 @@
   .numero-result .num-label{font-family:'Spectral',serif;font-size:1.15rem;color:var(--text);margin-bottom:12px;}
   .numero-result .num-desc{color:var(--dim);font-size:0.92rem;line-height:1.65;}
 
+  section.carte-jour{padding:56px 0;border-bottom:1px solid var(--line);}
+  section.carte-jour h2{font-size:clamp(1.5rem,3vw,2rem);max-width:22ch;}
+  section.carte-jour p.intro{color:var(--dim);margin-top:12px;max-width:60ch;line-height:1.6;}
+  .carte-box{
+    margin:32px auto 0;max-width:360px;text-align:center;
+    background:linear-gradient(160deg,var(--card),var(--void));
+    border:1px solid var(--ember);border-radius:12px;padding:38px 28px;
+    box-shadow:0 0 40px rgba(201,132,63,0.12);
+    transition:opacity 0.25s ease;
+  }
+  .carte-symbole{font-size:2.6rem;margin-bottom:14px;}
+  .carte-titre{font-family:'Spectral',serif;font-size:1.3rem;color:var(--ember);margin-bottom:12px;}
+  .carte-msg{color:var(--text);font-size:0.95rem;line-height:1.65;min-height:70px;}
+  .carte-date{margin-top:16px;font-size:0.75rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;}
+  .carte-btn{
+    margin-top:22px;background:transparent;border:1px solid var(--jade);color:var(--jade);
+    padding:10px 20px;border-radius:20px;font-size:0.85rem;font-weight:600;cursor:pointer;
+  }
+  .carte-btn:hover{background:var(--jade);color:var(--text);}
+
   .chat-toggle{
     position:fixed;bottom:22px;right:22px;z-index:50;
     width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
@@ -258,6 +278,7 @@
     <div class="nav-links">
       <a href="#pratiques">Pratiques spirituelles</a>
       <a href="#numerologie">Numérologie</a>
+      <a href="#carte-jour">Message du jour</a>
       <a href="#boutique">Documents PDF</a>
       <a class="nav-cta" href="#contact">Prendre rendez-vous</a>
     </div>
@@ -525,6 +546,20 @@
   </div>
 </section>
 
+<section class="carte-jour" id="carte-jour">
+  <div class="wrap">
+    <h2>Message spirituel du jour</h2>
+    <p class="intro">Une carte différente chaque jour, la même pour tous — à consulter comme un petit moment de recueillement quotidien. Vous pouvez aussi en tirer une pour vous, à tout instant.</p>
+    <div class="carte-box">
+      <div class="carte-symbole" id="carte-symbole">✨</div>
+      <div class="carte-titre" id="carte-titre">—</div>
+      <div class="carte-msg" id="carte-msg">Chargement...</div>
+      <div class="carte-date" id="carte-date"></div>
+      <button type="button" class="carte-btn" id="carte-btn">Tirer une carte pour moi</button>
+    </div>
+  </div>
+</section>
+
 <section class="boutique" id="boutique">
   <div class="wrap">
     <h2>Documents à télécharger</h2>
@@ -731,6 +766,70 @@
     <button type="button" id="chat-send">Envoyer</button>
   </div>
 </div>
+
+<script>
+(function(){
+  var CARTES = [
+    {s:"🌅", t:"Renouveau", m:"Chaque jour est une occasion de recommencer, sans avoir besoin d'effacer ce qui a précédé."},
+    {s:"🕊️", t:"Paix intérieure", m:"Le calme ne dépend pas de ce qui vous entoure, mais de la place que vous laissez à l'agitation en vous."},
+    {s:"🌿", t:"Patience", m:"Ce qui grandit vraiment prend du temps. N'exigez pas de vous des fleurs avant même d'avoir planté la graine."},
+    {s:"🔥", t:"Courage", m:"Le courage n'est pas l'absence de peur, mais la décision d'avancer malgré elle, un pas à la fois."},
+    {s:"🌊", t:"Lâcher-prise", m:"Certaines choses ne se résolvent pas en les serrant plus fort, mais en acceptant de les laisser suivre leur cours."},
+    {s:"⭐", t:"Confiance", m:"Vous n'avez pas besoin de connaître tout le chemin pour faire le prochain pas avec confiance."},
+    {s:"🌸", t:"Douceur", m:"Traitez-vous aujourd'hui avec la même bienveillance que vous offririez à quelqu'un que vous aimez."},
+    {s:"🧭", t:"Clarté", m:"Quand tout semble confus, revenez à une seule question simple : qu'est-ce qui compte vraiment pour moi, là, maintenant ?"},
+    {s:"🙏", t:"Gratitude", m:"Même dans une journée difficile, il existe presque toujours un détail pour lequel être reconnaissant."},
+    {s:"🌙", t:"Repos", m:"Ralentir n'est pas reculer. Parfois, le repos est ce qui permet d'avancer plus loin ensuite."},
+    {s:"🪶", t:"Légèreté", m:"Vous n'êtes pas obligé de porter aujourd'hui le poids de toutes vos préoccupations à la fois."},
+    {s:"🌱", t:"Croissance", m:"Les changements les plus durables sont rarement spectaculaires — ils se construisent discrètement, jour après jour."},
+    {s:"🔆", t:"Lumière intérieure", m:"Ce que vous cherchez à l'extérieur se trouve souvent déjà, en germe, quelque part en vous."},
+    {s:"🌀", t:"Équilibre", m:"Il n'est pas nécessaire de tout donner en même temps. L'équilibre se trouve dans la répartition, pas dans l'excès."},
+    {s:"🦋", t:"Transformation", m:"Ce que vous traversez actuellement vous change peut-être plus que vous ne le percevez sur le moment."},
+    {s:"🛤️", t:"Chemin", m:"Vous n'êtes pas en retard sur votre vie. Chacun avance selon son propre rythme, pas celui des autres."},
+    {s:"💧", t:"Purification", m:"Autorisez-vous à déposer aujourd'hui ce qui ne vous appartient plus vraiment — une pensée, une rancune, une fatigue."},
+    {s:"🌾", t:"Simplicité", m:"La réponse la plus juste est parfois la plus simple, celle que vous aviez déjà en tête avant de trop réfléchir."},
+    {s:"🕯️", t:"Intention", m:"Une intention claire, même modeste, oriente davantage la journée qu'une multitude d'objectifs flous."},
+    {s:"🌈", t:"Espoir", m:"Après une période difficile, il est normal que la confiance revienne lentement — laissez-lui le temps."},
+    {s:"🪷", t:"Ancrage", m:"Avant d'avancer, prenez un instant pour sentir où vous êtes vraiment, ici et maintenant."},
+    {s:"🔑", t:"Ouverture", m:"Une porte que vous croyiez fermée s'entrouvre parfois simplement parce que vous avez changé de regard."},
+    {s:"🌟", t:"Persévérance", m:"Ce n'est pas la vitesse qui compte, mais le fait de continuer à avancer, même à petits pas."},
+    {s:"🍃", t:"Détachement", m:"Vous pouvez vous soucier de quelqu'un sans porter à sa place ce qui lui appartient."},
+    {s:"🌤️", t:"Sérénité", m:"Tout ne se résout pas aujourd'hui, et ce n'est pas grave. Certaines réponses viennent avec le temps."},
+    {s:"🧘", t:"Présence", m:"L'instant présent est le seul endroit où vous pouvez réellement agir — le reste est mémoire ou anticipation."},
+    {s:"🕊️", t:"Pardon", m:"Pardonner ne veut pas dire oublier — cela veut dire cesser de porter un poids qui ne vous fait plus avancer."},
+    {s:"🌻", t:"Rayonnement", m:"Votre présence a plus d'impact sur les autres que vous ne l'imaginez — soyez-en conscient aujourd'hui."},
+    {s:"🌌", t:"Vision large", m:"Prenez un peu de recul : ce qui vous semble immense aujourd'hui aura peut-être une tout autre taille demain."},
+    {s:"🤲", t:"Réceptivité", m:"Il est parfois aussi important de savoir recevoir de l'aide que de savoir en donner."}
+  ];
+
+  function afficherCarte(idx, cls){
+    var c = CARTES[idx];
+    document.getElementById('carte-symbole').textContent = c.s;
+    document.getElementById('carte-titre').textContent = c.t;
+    document.getElementById('carte-msg').textContent = c.m;
+  }
+
+  var today = new Date();
+  var dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+  var idxJour = dayOfYear % CARTES.length;
+  afficherCarte(idxJour);
+
+  var moisFr = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+  document.getElementById('carte-date').textContent =
+    today.getDate() + ' ' + moisFr[today.getMonth()] + ' ' + today.getFullYear();
+
+  document.getElementById('carte-btn').addEventListener('click', function(){
+    var box = document.querySelector('.carte-box');
+    var idxAlea = Math.floor(Math.random() * CARTES.length);
+    box.style.opacity = '0.3';
+    setTimeout(function(){
+      afficherCarte(idxAlea);
+      document.getElementById('carte-date').textContent = 'Tirage personnel';
+      box.style.opacity = '1';
+    }, 250);
+  });
+})();
+</script>
 
 <script>
 (function(){
