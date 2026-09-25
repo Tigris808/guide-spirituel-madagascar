@@ -133,6 +133,49 @@
   .numero-result .num-label{font-family:'Spectral',serif;font-size:1.15rem;color:var(--text);margin-bottom:12px;}
   .numero-result .num-desc{color:var(--dim);font-size:0.92rem;line-height:1.65;}
 
+  .chat-toggle{
+    position:fixed;bottom:22px;right:22px;z-index:50;
+    width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--ember);color:var(--void);font-size:1.5rem;
+    box-shadow:0 6px 18px rgba(0,0,0,0.4);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .chat-panel{
+    position:fixed;bottom:90px;right:22px;z-index:50;
+    width:320px;max-width:calc(100vw - 32px);height:440px;max-height:70vh;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    display:none;flex-direction:column;overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  }
+  .chat-panel.open{display:flex;}
+  .chat-head{padding:14px 16px;border-bottom:1px solid var(--line);background:var(--void);}
+  .chat-head b{font-family:'Spectral',serif;color:var(--ember);font-size:1rem;}
+  .chat-head span{display:block;font-size:0.75rem;color:var(--dim);margin-top:2px;}
+  .chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+  .chat-bubble{max-width:85%;padding:9px 12px;border-radius:10px;font-size:0.88rem;line-height:1.5;}
+  .chat-bubble.user{align-self:flex-end;background:var(--ember);color:var(--void);}
+  .chat-bubble.bot{align-self:flex-start;background:var(--void);border:1px solid var(--line);color:var(--text);}
+  .chat-bubble.bot.loading{color:var(--dim);font-style:italic;}
+  .chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);}
+  .chat-input-row input{
+    flex:1;background:var(--void);border:1px solid var(--line);color:var(--text);
+    padding:9px 10px;border-radius:6px;font-size:0.88rem;font-family:'Work Sans',sans-serif;
+  }
+  .chat-input-row button{
+    background:var(--jade);color:var(--text);border:none;padding:0 14px;
+    border-radius:6px;font-weight:600;cursor:pointer;
+  }
+  .chat-quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px;}
+  .chat-quick button{
+    background:transparent;border:1px solid var(--jade);color:var(--jade);
+    font-size:0.76rem;padding:5px 10px;border-radius:20px;cursor:pointer;
+  }
+  .chat-quick button:hover{background:var(--jade);color:var(--text);}
+  @media (max-width:480px){
+    .chat-panel{right:16px;bottom:82px;width:calc(100vw - 32px);}
+    .chat-toggle{right:16px;}
+  }
+
   .boutique-note{margin-top:24px;font-size:0.85rem;color:var(--dim);border-left:2px solid var(--ember);padding-left:14px;}
 
   .doc-cover{
@@ -672,6 +715,139 @@
   </div>
 </footer>
 </div>
+
+<button class="chat-toggle" id="chat-toggle" aria-label="Discuter avec le guide virtuel">💬</button>
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-head">
+    <b>Guide virtuel</b>
+    <span>Réponses instantanées sur la spiritualité, la méditation, le yoga et le site</span>
+  </div>
+  <div class="chat-msgs" id="chat-msgs">
+    <div class="chat-bubble bot">Bonjour 🙏 Posez-moi une question, ou choisissez un sujet ci-dessous.</div>
+  </div>
+  <div class="chat-quick" id="chat-quick"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Votre question...">
+    <button type="button" id="chat-send">Envoyer</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  function norm(s){
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  var KB = [
+    { kw: ["comment mediter", "commencer mediter", "debuter meditation"],
+      a: "Pour commencer : asseyez-vous confortablement, dos droit, yeux fermés. Respirez lentement par le nez (4 secondes inspiration, 4 secondes expiration). Quand une pensée arrive, notez-la sans jugement puis revenez à la respiration. Cinq minutes par jour suffisent pour débuter — vous trouverez le guide complet (8 pages) dans la section Documents PDF." },
+    { kw: ["bienfait meditation", "meditation sert", "pourquoi mediter"],
+      a: "La pratique régulière est généralement associée à plus de calme, une meilleure gestion des pensées et un sommeil plus apaisé. Les effets varient selon les personnes et demandent de la régularité pour se faire sentir." },
+    { kw: ["meditation"],
+      a: "La méditation est une pratique d'entraînement de l'attention (respiration, sensation, mot répété) pour calmer l'esprit. Vous trouverez des exercices détaillés dans la section « Pratiques spirituelles » du site." },
+    { kw: ["yoga posture", "posture yoga", "position yoga"],
+      a: "Une posture simple pour commencer : asseyez-vous en tailleur, dos droit, mains sur les genoux paumes vers le ciel. Respirez en gonflant puis en rentrant le ventre pendant 2 minutes, yeux fermés." },
+    { kw: ["yoga"],
+      a: "Le yoga associe postures, respiration contrôlée et concentration, pour unifier le corps et l'esprit. C'est détaillé dans la section « Pratiques spirituelles », avec un exercice simple pour débuter." },
+    { kw: ["comment prier", "composer une priere", "ecrire une priere"],
+      a: "Une prière simple suit trois temps : le remerciement (ce pour quoi vous êtes reconnaissant), l'intention (ce que vous demandez), puis le silence. Le recueil « Prières et rituels malgaches » détaille plusieurs formes et variantes." },
+    { kw: ["priere"],
+      a: "Il existe plusieurs formes de prière : de demande, de gratitude, méditative ou rituelle. Le recueil PDF « Prières et rituels malgaches » les détaille toutes, avec des exemples concrets." },
+    { kw: ["loi d'attraction", "loi attraction"],
+      a: "La loi d'attraction est une croyance spirituelle : les pensées et émotions dominantes orienteraient l'attention et les choix. Elle repose sur quatre piliers — clarté de l'intention, affirmations, lâcher-prise, passage à l'action. Ce n'est pas un principe scientifiquement prouvé, plutôt un outil de discipline mentale." },
+    { kw: ["affirmation"],
+      a: "Une bonne affirmation est courte, personnelle, au présent et sans négation — par exemple « j'avance avec confiance, à mon rythme ». Répétez-la chaque matin, à voix haute si possible." },
+    { kw: ["purification", "purifier"],
+      a: "Un rituel simple : aérez la pièce quelques minutes, passez un linge ou de l'eau légèrement salée sur les surfaces, puis formulez à voix haute une intention de renouveau. Plusieurs variantes sont détaillées dans le recueil PDF." },
+    { kw: ["numerologie", "chemin de vie"],
+      a: "Le chemin de vie se calcule à partir de votre date de naissance. Rendez-vous dans la section « Numérologie » du site : entrez votre date, et vous obtiendrez votre nombre avec son interprétation." },
+    { kw: ["reserver", "rendez-vous", "consultation", "rdv"],
+      a: "Pour réserver une consultation (guidance individuelle 5 000 Ar, séance à distance 10 000 Ar, ou rituel sur devis), écrivez directement via le bouton « Prendre rendez-vous » en haut de page, ou en bas dans la section Contact." },
+    { kw: ["prix", "tarif", "combien coute", "coute combien"],
+      a: "Guidance individuelle : 5 000 Ar. Séance à distance : 10 000 Ar. Rituel traditionnel : sur devis. Les documents PDF vont de 6 000 à 7 000 Ar." },
+    { kw: ["payer", "paiement", "orange money", "mvola"],
+      a: "Le paiement se fait par Orange Money. Composez #144# sur votre téléphone Orange, envoyez le montant au numéro indiqué dans la section Paiement, puis envoyez la capture du reçu par WhatsApp pour confirmer." },
+    { kw: ["pdf", "document", "livre", "guide", "cahier"],
+      a: "Trois documents sont disponibles dans la section « Documents PDF » : le Guide complet de la méditation, le Cahier d'exercices Loi d'attraction, et le recueil Prières et rituels malgaches. Après paiement, un code vous est donné pour les télécharger." },
+    { kw: ["horaire", "ouvert", "heure"],
+      a: "Les consultations sont possibles tous les jours de 7h à 19h." },
+    { kw: ["ville", "adresse", "ou est", "localisation", "toamasina"],
+      a: "Les consultations se font à Toamasina, avec possibilité de déplacement, ou à distance par téléphone." },
+    { kw: ["contact", "whatsapp", "facebook", "joindre", "ecrire"],
+      a: "Vous pouvez écrire directement via le bouton « Prendre rendez-vous » (Facebook) ou par WhatsApp, disponibles en bas de page dans la section Contact." },
+    { kw: ["bonjour", "salut", "coucou", "bonsoir"],
+      a: "Bonjour 🙏 Comment puis-je vous aider aujourd'hui — méditation, yoga, prière, loi d'attraction, ou réservation ?" },
+    { kw: ["merci"],
+      a: "Avec plaisir 🙏 N'hésitez pas si vous avez d'autres questions." }
+  ];
+
+  var FALLBACK = "Je n'ai pas de réponse toute prête pour cette question précise. Pour un accompagnement personnalisé, écrivez directement via le bouton « Prendre rendez-vous » ou par WhatsApp, en bas de page.";
+
+  var QUICK = [
+    "Comment méditer ?",
+    "Qu'est-ce que la loi d'attraction ?",
+    "Comment réserver ?",
+    "Comment payer ?"
+  ];
+
+  function findAnswer(text){
+    var n = norm(text);
+    for (var i = 0; i < KB.length; i++){
+      for (var j = 0; j < KB[i].kw.length; j++){
+        if (n.indexOf(norm(KB[i].kw[j])) !== -1) return KB[i].a;
+      }
+    }
+    return FALLBACK;
+  }
+
+  var toggle = document.getElementById('chat-toggle');
+  var panel = document.getElementById('chat-panel');
+  var msgs = document.getElementById('chat-msgs');
+  var input = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('chat-send');
+  var quick = document.getElementById('chat-quick');
+
+  QUICK.forEach(function(q){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = q;
+    btn.addEventListener('click', function(){
+      input.value = q;
+      send();
+    });
+    quick.appendChild(btn);
+  });
+
+  toggle.addEventListener('click', function(){
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) { input.focus(); }
+  });
+
+  function addBubble(text, cls){
+    var b = document.createElement('div');
+    b.className = 'chat-bubble ' + cls;
+    b.textContent = text;
+    msgs.appendChild(b);
+    msgs.scrollTop = msgs.scrollHeight;
+    return b;
+  }
+
+  function send(){
+    var text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addBubble(text, 'user');
+    setTimeout(function(){
+      addBubble(findAnswer(text), 'bot');
+    }, 350);
+  }
+
+  sendBtn.addEventListener('click', send);
+  input.addEventListener('keydown', function(e){
+    if (e.key === 'Enter') send();
+  });
+})();
+</script>
 
 <script>
 var VIE_DESC = {
