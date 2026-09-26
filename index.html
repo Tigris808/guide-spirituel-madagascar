@@ -218,6 +218,21 @@
   }
   .lang-btn:hover{border-color:var(--ember);color:var(--ember);}
 
+  section.faq{padding:56px 0;border-bottom:1px solid var(--line);background:var(--card);}
+  section.faq h2{font-size:clamp(1.5rem,3vw,2rem);}
+  .faq-list{margin-top:30px;border-top:1px solid var(--line);}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:16px 4px;display:flex;justify-content:space-between;align-items:center;
+    color:var(--text);font-size:0.95rem;font-weight:600;font-family:'Work Sans',sans-serif;
+  }
+  .faq-q .plus{color:var(--ember);font-size:1.2rem;transition:transform 0.2s ease;}
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height 0.25s ease;}
+  .faq-item.open .faq-a{max-height:300px;}
+  .faq-a p{color:var(--dim);font-size:0.9rem;line-height:1.6;padding:0 4px 18px;margin:0;}
+
 
   .chat-toggle{
     position:fixed;bottom:22px;right:22px;z-index:50;
@@ -347,6 +362,7 @@
       <a href="#carte-jour" data-i18n="nav-carte">Message du jour</a>
       <a href="#horoscope" data-i18n="nav-horo">Horoscope</a>
       <a href="#boutique" data-i18n="nav-pdf">Documents PDF</a>
+      <a href="#faq">FAQ</a>
       <button type="button" class="lang-btn" id="lang-toggle">MG</button>
       <a class="nav-cta" href="#contact" data-i18n="nav-rdv">Prendre rendez-vous</a>
     </div>
@@ -835,6 +851,46 @@
   </div>
 </section>
 
+<section class="faq" id="faq">
+  <div class="wrap">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-list" id="faq-list">
+      <div class="faq-item">
+        <button type="button" class="faq-q">Comment réserver une consultation ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Écrivez via le bouton « Prendre rendez-vous » (Facebook) en précisant le type de consultation souhaité et si vous préférez le présentiel ou le téléphone. La réponse arrive en général le jour même.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Quels moyens de paiement acceptez-vous ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Le paiement se fait par Orange Money. Le détail de la procédure (code, numéro) est disponible dans la section Paiement du site.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Combien de temps avant d'avoir une réponse ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Les consultations sont possibles tous les jours de 7h à 19h, et les messages reçoivent généralement une réponse le jour même.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Nos échanges sont-ils confidentiels ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Oui. Ce qui est partagé lors d'une consultation reste entre vous et le guide, et n'est ni publié ni partagé avec qui que ce soit sans votre accord.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Puis-je être remboursé si je change d'avis ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Pour une consultation non encore réalisée, écrivez directement pour convenir d'un nouveau créneau ou d'un remboursement. Les documents PDF, une fois le code de téléchargement transmis, ne sont pas remboursables.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Comment recevoir mes documents PDF après paiement ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Une fois le paiement confirmé, un code de déblocage vous est transmis. Saisissez-le dans la section Documents PDF pour faire apparaître le lien de téléchargement.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Les consultations sont-elles possibles hors de Toamasina ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Oui, les séances à distance par téléphone sont disponibles partout à Madagascar. Un déplacement en présentiel est aussi possible selon la localisation.</p></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q">Le guide virtuel (chat) remplace-t-il une vraie consultation ? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Non. Le chat donne des repères généraux instantanés sur la spiritualité, mais un accompagnement personnalisé nécessite une vraie consultation avec un guide humain.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="contact" id="contact">
   <div class="wrap">
     <div>
@@ -873,6 +929,14 @@
     <button type="button" id="chat-send">Envoyer</button>
   </div>
 </div>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    btn.parentElement.classList.toggle('open');
+  });
+});
+</script>
 
 <script>
 (function(){
@@ -1087,6 +1151,8 @@
       a: "Le chemin de vie se calcule à partir de votre date de naissance. Rendez-vous dans la section « Numérologie » du site : entrez votre date, et vous obtiendrez votre nombre avec son interprétation." },
     { kw: ["horoscope", "signe astrologique", "astrologie", "mon signe"],
       a: "L'horoscope du jour est disponible dans la section « Horoscope » : choisissez votre signe pour voir la tendance du jour. C'est une invitation à réfléchir, pas une prédiction certaine." },
+    { kw: ["confidentiel", "rembourse", "annulation", "faq"],
+      a: "Toutes ces questions (paiement, délais, confidentialité, remboursement) sont détaillées dans la section « FAQ » du site, en bas de page." },
     { kw: ["karma"],
       a: "Le karma est l'idée, présente dans plusieurs traditions spirituelles, que nos actes et intentions ont des répercussions sur notre propre vie, parfois de façon différée. Il invite surtout à agir avec conscience plutôt qu'à craindre une punition future." },
     { kw: ["chakra"],
