@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Guide spirituel à Madagascar</title>
+<meta name="description" content="Guidance spirituelle, méditation, yoga, prières et rituels malgaches, numérologie et horoscope du jour — consultations à Toamasina et à distance, Madagascar.">
+<meta property="og:title" content="Guide spirituel à Madagascar">
+<meta property="og:description" content="Méditation, yoga, prières, loi d'attraction, numérologie et horoscope du jour. Consultations à Toamasina et à distance.">
+<meta property="og:image" content="https://tigris808.github.io/guide-spirituel-madagascar/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tigris808.github.io/guide-spirituel-madagascar/">
+<meta name="twitter:card" content="summary_large_image">
+<style>html{scroll-behavior:smooth;}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -153,6 +161,64 @@
   }
   .carte-btn:hover{background:var(--jade);color:var(--text);}
 
+  section.horoscope{padding:56px 0;border-bottom:1px solid var(--line);background:var(--card);}
+  section.horoscope h2{font-size:clamp(1.5rem,3vw,2rem);max-width:22ch;}
+  section.horoscope p.intro{color:var(--dim);margin-top:12px;max-width:60ch;line-height:1.6;}
+  .signe-grid{margin-top:28px;display:grid;grid-template-columns:repeat(6,1fr);gap:8px;}
+  .signe-btn{
+    background:var(--void);border:1px solid var(--line);color:var(--dim);
+    border-radius:6px;padding:12px 4px;text-align:center;cursor:pointer;font-size:0.78rem;
+  }
+  .signe-btn .signe-symb{display:block;font-size:1.3rem;margin-bottom:4px;}
+  .signe-btn.active{border-color:var(--ember);color:var(--ember);background:rgba(201,132,63,0.08);}
+  .horo-result{
+    margin-top:26px;background:var(--void);border:1px solid var(--line);border-radius:8px;
+    padding:26px;display:none;
+  }
+  .horo-result.show{display:block;}
+  .horo-result .horo-titre{font-family:'Spectral',serif;font-size:1.2rem;color:var(--ember);margin-bottom:4px;}
+  .horo-result .horo-dates{font-size:0.8rem;color:var(--dim);margin-bottom:14px;}
+  .horo-result .horo-msg{color:var(--text);font-size:0.92rem;line-height:1.6;margin-bottom:10px;}
+  .horo-result .horo-domaine{font-size:0.8rem;color:var(--jade);font-weight:600;}
+  @media (max-width:600px){
+    .signe-grid{grid-template-columns:repeat(4,1fr);}
+  }
+
+  section.apropos{padding:56px 0;border-bottom:1px solid var(--line);}
+  section.apropos h2{font-size:clamp(1.5rem,3vw,2rem);}
+  section.apropos .wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start;}
+  .apropos-portrait{
+    width:100%;aspect-ratio:1;border-radius:50%;
+    background:linear-gradient(160deg,var(--card),var(--ember));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Spectral',serif;font-size:2.4rem;color:var(--void);
+    border:1px solid var(--line);max-width:220px;margin:0 auto;
+  }
+  section.apropos p{color:var(--dim);line-height:1.65;margin-top:14px;font-size:0.95rem;}
+  .avis-grid{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);}
+  .avis-card{padding:24px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .avis-card:last-child{border-right:none;}
+  .avis-card p{color:var(--dim);font-size:0.88rem;line-height:1.55;font-style:italic;margin:0;}
+  @media (max-width:760px){
+    section.apropos .wrap{grid-template-columns:1fr;}
+    .avis-grid{grid-template-columns:1fr;}
+    .avis-card{border-right:none;}
+  }
+
+  .share-row{display:flex;gap:10px;margin-top:18px;justify-content:center;flex-wrap:wrap;}
+  .share-btn{
+    background:transparent;border:1px solid var(--line);color:var(--dim);
+    padding:8px 14px;border-radius:20px;font-size:0.8rem;cursor:pointer;text-decoration:none;
+  }
+  .share-btn:hover{border-color:var(--ember);color:var(--ember);}
+
+  .lang-btn{
+    background:transparent;border:1px solid var(--line);color:var(--dim);
+    padding:6px 12px;border-radius:16px;font-size:0.78rem;cursor:pointer;font-weight:600;
+  }
+  .lang-btn:hover{border-color:var(--ember);color:var(--ember);}
+
+
   .chat-toggle{
     position:fixed;bottom:22px;right:22px;z-index:50;
     width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;
@@ -276,11 +342,13 @@
   <div class="wrap">
     <div class="brand"><b>Mpanoro</b> — Guides Spirituels</div>
     <div class="nav-links">
-      <a href="#pratiques">Pratiques spirituelles</a>
-      <a href="#numerologie">Numérologie</a>
-      <a href="#carte-jour">Message du jour</a>
-      <a href="#boutique">Documents PDF</a>
-      <a class="nav-cta" href="#contact">Prendre rendez-vous</a>
+      <a href="#pratiques" data-i18n="nav-pratiques">Pratiques spirituelles</a>
+      <a href="#numerologie" data-i18n="nav-numero">Numérologie</a>
+      <a href="#carte-jour" data-i18n="nav-carte">Message du jour</a>
+      <a href="#horoscope" data-i18n="nav-horo">Horoscope</a>
+      <a href="#boutique" data-i18n="nav-pdf">Documents PDF</a>
+      <button type="button" class="lang-btn" id="lang-toggle">MG</button>
+      <a class="nav-cta" href="#contact" data-i18n="nav-rdv">Prendre rendez-vous</a>
     </div>
   </div>
 </nav>
@@ -301,6 +369,23 @@
     </div>
   </div>
 </header>
+
+<section class="apropos" id="apropos">
+  <div class="wrap">
+    <div>
+      <div class="apropos-portrait">🙏</div>
+    </div>
+    <div>
+      <h2 data-i18n="apropos-titre">À propos</h2>
+      <p data-i18n="apropos-texte">Mpanoro accompagne toute personne en recherche de sens, de calme ou de clarté, à travers la guidance spirituelle, les rituels traditionnels et les pratiques comme la méditation ou la prière. L'approche se veut respectueuse de toutes les croyances, sans jugement, et adaptée à chaque situation individuelle — en présentiel à Toamasina ou à distance, partout à Madagascar.</p>
+      <div class="avis-grid">
+        <div class="avis-card"><p data-i18n="avis-1">Les premiers témoignages de clients seront publiés ici prochainement.</p></div>
+        <div class="avis-card"><p data-i18n="avis-2">Vous avez consulté récemment ? Votre avis peut être ajouté à cette section.</p></div>
+        <div class="avis-card"><p data-i18n="avis-3">Un espace réservé aux retours sincères, sans avis inventés.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="services" id="services">
   <div class="wrap">
@@ -556,6 +641,28 @@
       <div class="carte-msg" id="carte-msg">Chargement...</div>
       <div class="carte-date" id="carte-date"></div>
       <button type="button" class="carte-btn" id="carte-btn">Tirer une carte pour moi</button>
+      <div class="share-row">
+        <a class="share-btn" id="share-wa-carte" href="#" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+        <a class="share-btn" id="share-fb-carte" href="#" target="_blank" rel="noopener">Partager sur Facebook</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="horoscope" id="horoscope">
+  <div class="wrap">
+    <h2>Horoscope du jour</h2>
+    <p class="intro">Choisissez votre signe pour découvrir la tendance du jour. À prendre comme une invitation à réfléchir, pas comme une certitude.</p>
+    <div class="signe-grid" id="signe-grid"></div>
+    <div class="horo-result" id="horo-result">
+      <div class="horo-titre" id="horo-titre"></div>
+      <div class="horo-dates" id="horo-dates"></div>
+      <div class="horo-msg" id="horo-msg"></div>
+      <div class="horo-domaine" id="horo-domaine"></div>
+      <div class="share-row">
+        <a class="share-btn" id="share-wa-horo" href="#" target="_blank" rel="noopener">Partager sur WhatsApp</a>
+        <a class="share-btn" id="share-fb-horo" href="#" target="_blank" rel="noopener">Partager sur Facebook</a>
+      </div>
     </div>
   </div>
 </section>
@@ -758,7 +865,7 @@
     <span>Réponses instantanées sur la spiritualité, la méditation, le yoga et le site</span>
   </div>
   <div class="chat-msgs" id="chat-msgs">
-    <div class="chat-bubble bot">Bonjour 🙏 Posez-moi une question, ou choisissez un sujet ci-dessous.</div>
+    <div class="chat-bubble bot">Bonjour 🙏 Aucune question n'est bête ni bizarre — posez-moi tout ce qui touche à la spiritualité, ou choisissez un sujet ci-dessous.</div>
   </div>
   <div class="chat-quick" id="chat-quick"></div>
   <div class="chat-input-row">
@@ -766,6 +873,121 @@
     <button type="button" id="chat-send">Envoyer</button>
   </div>
 </div>
+
+<script>
+(function(){
+  var SITE_URL = "https://tigris808.github.io/guide-spirituel-madagascar/";
+
+  function setShare(waId, fbId, text){
+    var waLink = document.getElementById(waId);
+    var fbLink = document.getElementById(fbId);
+    if (waLink) waLink.href = "https://wa.me/?text=" + encodeURIComponent(text + " " + SITE_URL);
+    if (fbLink) fbLink.href = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SITE_URL) + "&quote=" + encodeURIComponent(text);
+  }
+  window.updateCarteShare = function(titre, msg){
+    setShare('share-wa-carte', 'share-fb-carte', 'Message spirituel du jour : ' + titre + ' — ' + msg);
+  };
+  window.updateHoroShare = function(signe, msg){
+    setShare('share-wa-horo', 'share-fb-horo', 'Horoscope du jour (' + signe + ') : ' + msg);
+  };
+
+  var I18N = {
+    "nav-pratiques": {mg: "Fomba ara-panahy"},
+    "nav-numero": {mg: "Numerôlôjia"},
+    "nav-carte": {mg: "Hafatra androany"},
+    "nav-horo": {mg: "Horoskaopy"},
+    "nav-pdf": {mg: "Rakitra PDF"},
+    "nav-rdv": {mg: "Maka fotoana"},
+    "apropos-titre": {mg: "Momba anay"}
+  };
+  var currentLang = 'fr';
+  var frCache = {};
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    frCache[el.getAttribute('data-i18n')] = el.textContent;
+  });
+  var toggleBtn = document.getElementById('lang-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function(){
+      currentLang = (currentLang === 'fr') ? 'mg' : 'fr';
+      document.querySelectorAll('[data-i18n]').forEach(function(el){
+        var key = el.getAttribute('data-i18n');
+        if (currentLang === 'mg' && I18N[key]) {
+          el.textContent = I18N[key].mg;
+        } else {
+          el.textContent = frCache[key];
+        }
+      });
+      toggleBtn.textContent = (currentLang === 'fr') ? 'MG' : 'FR';
+    });
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var SIGNES = [
+    {n:"Bélier", s:"♈", d:"21 mars – 19 avril"},
+    {n:"Taureau", s:"♉", d:"20 avril – 20 mai"},
+    {n:"Gémeaux", s:"♊", d:"21 mai – 20 juin"},
+    {n:"Cancer", s:"♋", d:"21 juin – 22 juillet"},
+    {n:"Lion", s:"♌", d:"23 juillet – 22 août"},
+    {n:"Vierge", s:"♍", d:"23 août – 22 septembre"},
+    {n:"Balance", s:"♎", d:"23 septembre – 22 octobre"},
+    {n:"Scorpion", s:"♏", d:"23 octobre – 21 novembre"},
+    {n:"Sagittaire", s:"♐", d:"22 novembre – 21 décembre"},
+    {n:"Capricorne", s:"♑", d:"22 décembre – 19 janvier"},
+    {n:"Verseau", s:"♒", d:"20 janvier – 18 février"},
+    {n:"Poissons", s:"♓", d:"19 février – 20 mars"}
+  ];
+
+  var MSGS = [
+    "Une conversation ou une idée reçue aujourd'hui pourrait éclairer une décision que vous remettez à plus tard.",
+    "C'est un bon jour pour ralentir et vérifier que vos actions correspondent vraiment à vos priorités actuelles.",
+    "Une occasion de simplifier quelque chose de compliqué pourrait se présenter — restez attentif aux détails.",
+    "Votre énergie sociale est favorisée : un échange sincère avec quelqu'un pourrait apporter un vrai soulagement.",
+    "Un imprévu pourrait bousculer vos plans — la souplesse sera plus utile aujourd'hui que la résistance.",
+    "C'est le moment de terminer quelque chose que vous repoussez depuis un moment, même modestement.",
+    "Votre intuition semble particulièrement fiable aujourd'hui — accordez-lui un peu plus de crédit que d'habitude.",
+    "Une question financière ou matérielle mérite d'être regardée en face plutôt qu'évitée plus longtemps.",
+    "Le repos n'est pas un luxe aujourd'hui : accordez-vous une vraie pause, même courte.",
+    "Une relation proche pourrait demander un peu plus d'attention ou de patience que d'habitude.",
+    "C'est une bonne journée pour poser une intention claire plutôt que d'agir dans la précipitation.",
+    "Un petit geste de gratitude envers quelqu'un pourrait avoir plus d'impact que vous ne l'imaginez.",
+    "La journée favorise la réflexion plus que l'action — ne forcez rien qui ne vienne pas naturellement.",
+    "Une opportunité discrète pourrait passer inaperçue si vous restez uniquement concentré sur vos habitudes.",
+    "C'est un bon moment pour clarifier un malentendu avant qu'il ne prenne trop de place."
+  ];
+
+  var DOMAINES = ["Domaine du jour : relations", "Domaine du jour : travail", "Domaine du jour : énergie personnelle", "Domaine du jour : famille", "Domaine du jour : finances"];
+
+  var grid = document.getElementById('signe-grid');
+  SIGNES.forEach(function(sg, idx){
+    var btn = document.createElement('div');
+    btn.className = 'signe-btn';
+    btn.innerHTML = '<span class="signe-symb">' + sg.s + '</span>' + sg.n;
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.signe-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      afficherHoroscope(idx);
+    });
+    grid.appendChild(btn);
+  });
+
+  function afficherHoroscope(idx){
+    var today = new Date();
+    var dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+    var msgIdx = (dayOfYear + idx * 7) % MSGS.length;
+    var domIdx = (dayOfYear + idx * 3) % DOMAINES.length;
+    var sg = SIGNES[idx];
+    document.getElementById('horo-titre').textContent = sg.s + ' ' + sg.n;
+    document.getElementById('horo-dates').textContent = sg.d;
+    document.getElementById('horo-msg').textContent = MSGS[msgIdx];
+    document.getElementById('horo-domaine').textContent = DOMAINES[domIdx];
+    document.getElementById('horo-result').classList.add('show');
+    if (window.updateHoroShare) window.updateHoroShare(sg.n, MSGS[msgIdx]);
+  }
+})();
+</script>
 
 <script>
 (function(){
@@ -807,6 +1029,7 @@
     document.getElementById('carte-symbole').textContent = c.s;
     document.getElementById('carte-titre').textContent = c.t;
     document.getElementById('carte-msg').textContent = c.m;
+    if (window.updateCarteShare) window.updateCarteShare(c.t, c.m);
   }
 
   var today = new Date();
@@ -838,6 +1061,8 @@
   }
 
   var KB = [
+    { kw: ["suicide", "me tuer", "en finir", "envie de mourir", "plus envie de vivre"],
+      a: "Ce que vous traversez semble très lourd, et je tiens à vous le dire clairement : votre vie compte. Je ne suis pas en mesure de vous accompagner sur une détresse aussi importante, mais parlez-en dès maintenant à quelqu'un de confiance, ou contactez les services d'urgence ou une ligne d'écoute de votre pays. Vous n'avez pas à traverser cela seul(e)." },
     { kw: ["comment mediter", "commencer mediter", "debuter meditation"],
       a: "Pour commencer : asseyez-vous confortablement, dos droit, yeux fermés. Respirez lentement par le nez (4 secondes inspiration, 4 secondes expiration). Quand une pensée arrive, notez-la sans jugement puis revenez à la respiration. Cinq minutes par jour suffisent pour débuter — vous trouverez le guide complet (8 pages) dans la section Documents PDF." },
     { kw: ["bienfait meditation", "meditation sert", "pourquoi mediter"],
@@ -856,10 +1081,46 @@
       a: "La loi d'attraction est une croyance spirituelle : les pensées et émotions dominantes orienteraient l'attention et les choix. Elle repose sur quatre piliers — clarté de l'intention, affirmations, lâcher-prise, passage à l'action. Ce n'est pas un principe scientifiquement prouvé, plutôt un outil de discipline mentale." },
     { kw: ["affirmation"],
       a: "Une bonne affirmation est courte, personnelle, au présent et sans négation — par exemple « j'avance avec confiance, à mon rythme ». Répétez-la chaque matin, à voix haute si possible." },
-    { kw: ["purification", "purifier"],
-      a: "Un rituel simple : aérez la pièce quelques minutes, passez un linge ou de l'eau légèrement salée sur les surfaces, puis formulez à voix haute une intention de renouveau. Plusieurs variantes sont détaillées dans le recueil PDF." },
+    { kw: ["purification", "purifier", "mauvais oeil", "jorogne", "energie negative"],
+      a: "Un rituel simple : aérez la pièce quelques minutes, passez un linge ou de l'eau légèrement salée sur les surfaces, puis formulez à voix haute une intention de renouveau. Pour un rituel plus personnalisé, une consultation avec un guide humain est possible." },
     { kw: ["numerologie", "chemin de vie"],
       a: "Le chemin de vie se calcule à partir de votre date de naissance. Rendez-vous dans la section « Numérologie » du site : entrez votre date, et vous obtiendrez votre nombre avec son interprétation." },
+    { kw: ["horoscope", "signe astrologique", "astrologie", "mon signe"],
+      a: "L'horoscope du jour est disponible dans la section « Horoscope » : choisissez votre signe pour voir la tendance du jour. C'est une invitation à réfléchir, pas une prédiction certaine." },
+    { kw: ["karma"],
+      a: "Le karma est l'idée, présente dans plusieurs traditions spirituelles, que nos actes et intentions ont des répercussions sur notre propre vie, parfois de façon différée. Il invite surtout à agir avec conscience plutôt qu'à craindre une punition future." },
+    { kw: ["chakra"],
+      a: "Les chakras sont, dans certaines traditions, des centres d'énergie répartis le long du corps, associés chacun à un aspect de la vie (ancrage, émotions, volonté, amour, expression, intuition, spiritualité). Beaucoup de personnes les explorent à travers la méditation ou le yoga." },
+    { kw: ["energie"],
+      a: "En spiritualité, « l'énergie » désigne souvent un ressenti global — vital, émotionnel ou relationnel — plus qu'une mesure physique. Se recentrer par la respiration ou la méditation aide souvent à en retrouver le sentiment." },
+    { kw: ["ame", "esprit"],
+      a: "Selon les traditions, l'âme est perçue comme la part immatérielle et durable de l'être, distincte du corps. Sa nature exacte reste une question de croyance personnelle, que ce guide respecte sans trancher à votre place." },
+    { kw: ["reincarnation", "vie anterieure"],
+      a: "La réincarnation est l'idée que l'âme renaîtrait dans un nouveau corps après la mort, présente dans plusieurs traditions spirituelles. Ce n'est ni universellement admis ni prouvé — c'est affaire de croyance personnelle." },
+    { kw: ["ange gardien", "guide spirituel invisible"],
+      a: "Beaucoup de traditions évoquent une présence protectrice invisible qui accompagnerait chaque personne. Que vous y croyiez ou non, certains trouvent du réconfort à s'adresser à elle dans les moments difficiles, comme une forme de prière." },
+    { kw: ["reve", "cauchemar", "signification reve"],
+      a: "Les rêves sont interprétés très différemment selon les traditions et les personnes — il n'existe pas de dictionnaire universel fiable. Ce qui compte souvent le plus, c'est l'émotion ressentie au réveil plutôt que le symbole exact." },
+    { kw: ["deuil", "perte d'un proche", "quelqu'un est mort"],
+      a: "Le deuil est un chemin personnel, sans calendrier fixe. Certaines traditions proposent des prières ou des rituels pour honorer la mémoire d'un proche — le recueil « Prières et rituels » peut y aider. Si la douleur est très intense ou dure depuis longtemps, un accompagnement professionnel peut aussi être précieux." },
+    { kw: ["amour", "relation amoureuse", "couple"],
+      a: "Sur les questions de cœur, la guidance spirituelle peut aider à clarifier ce que vous ressentez et souhaitez vraiment — via une intention posée ou une consultation. Elle ne remplace pas un dialogue direct avec la personne concernée." },
+    { kw: ["chance", "malchance", "porte bonheur"],
+      a: "Beaucoup de traditions associent certains objets, gestes ou périodes à la chance. Cela reste avant tout symbolique : la constance dans l'action compte souvent plus qu'un porte-bonheur." },
+    { kw: ["intuition"],
+      a: "L'intuition est cette capacité à ressentir une direction sans pouvoir toujours l'expliquer logiquement. La méditation et le calme intérieur aident généralement à mieux l'entendre, en réduisant le bruit mental qui la couvre." },
+    { kw: ["sens de la vie", "pourquoi je suis la", "but de la vie"],
+      a: "C'est une question que beaucoup se posent, et il n'existe pas de réponse universelle. Certains la trouvent dans la spiritualité, d'autres dans leurs proches, leur travail ou leurs actions. Une consultation peut aider à explorer ce qui a du sens pour vous en particulier." },
+    { kw: ["peur", "anxiete", "j'ai peur"],
+      a: "La respiration lente (voir la section Méditation) aide souvent à apaiser une peur ponctuelle. Si l'anxiété est fréquente ou intense, un accompagnement spirituel peut apporter du réconfort, mais un avis professionnel de santé reste recommandé en complément." },
+    { kw: ["colere"],
+      a: "La colère signale souvent qu'une limite importante a été franchie. Avant d'agir sous le coup de l'émotion, quelques respirations lentes aident à retrouver assez de calme pour choisir consciemment votre réponse." },
+    { kw: ["stress", "fatigue", "epuise"],
+      a: "La méditation et la respiration lente (section Pratiques spirituelles) sont de bons points de départ pour retrouver du calme. Si l'épuisement est profond ou durable, en parler à un professionnel de santé est aussi important." },
+    { kw: ["argent", "abondance", "travail", "reussite"],
+      a: "Sur les questions d'argent ou de réussite, la loi d'attraction peut aider à clarifier une intention et à rester motivé — mais elle ne remplace jamais une démarche concrète (recherche active, gestion financière). Voir la section Loi d'attraction pour les exercices." },
+    { kw: ["decision", "je ne sais pas quoi faire", "quel choix"],
+      a: "Face à une décision difficile, un moment de calme (méditation) et une question simple aident souvent : « qu'est-ce qui compte vraiment pour moi ici ? ». Une consultation individuelle peut aussi apporter un regard extérieur bienveillant." },
     { kw: ["reserver", "rendez-vous", "consultation", "rdv"],
       a: "Pour réserver une consultation (guidance individuelle 5 000 Ar, séance à distance 10 000 Ar, ou rituel sur devis), écrivez directement via le bouton « Prendre rendez-vous » en haut de page, ou en bas dans la section Contact." },
     { kw: ["prix", "tarif", "combien coute", "coute combien"],
@@ -875,12 +1136,12 @@
     { kw: ["contact", "whatsapp", "facebook", "joindre", "ecrire"],
       a: "Vous pouvez écrire directement via le bouton « Prendre rendez-vous » (Facebook) ou par WhatsApp, disponibles en bas de page dans la section Contact." },
     { kw: ["bonjour", "salut", "coucou", "bonsoir"],
-      a: "Bonjour 🙏 Comment puis-je vous aider aujourd'hui — méditation, yoga, prière, loi d'attraction, ou réservation ?" },
+      a: "Bonjour 🙏 Aucune question n'est bête ici — méditation, yoga, prière, karma, chakras, rêves, décisions de vie... posez-moi ce que vous voulez." },
     { kw: ["merci"],
-      a: "Avec plaisir 🙏 N'hésitez pas si vous avez d'autres questions." }
+      a: "Avec plaisir 🙏 N'hésitez pas si vous avez d'autres questions, même inhabituelles." }
   ];
 
-  var FALLBACK = "Je n'ai pas de réponse toute prête pour cette question précise. Pour un accompagnement personnalisé, écrivez directement via le bouton « Prendre rendez-vous » ou par WhatsApp, en bas de page.";
+  var FALLBACK = "Votre question sort de ce que je sais traiter précisément pour l'instant, mais elle n'a rien de bête. Pour une réponse vraiment adaptée à votre situation, écrivez directement via le bouton « Prendre rendez-vous » ou par WhatsApp, en bas de page — un vrai guide humain pourra vous répondre.";
 
   var QUICK = [
     "Comment méditer ?",
